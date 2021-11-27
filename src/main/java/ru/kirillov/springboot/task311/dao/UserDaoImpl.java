@@ -1,0 +1,54 @@
+package ru.kirillov.springboot.task311.dao;
+
+import org.springframework.stereotype.Repository;
+import ru.kirillov.springboot.task311.models.User;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+
+@Repository
+public class UserDaoImpl implements UserDao {
+
+    @PersistenceContext                      // используем вместо @Autowired
+    private EntityManager entityManager;
+
+    @Override
+    public List<User> getAllUsers() {
+        return entityManager.createQuery("from User").getResultList();
+    }
+
+    @Override
+    public User getUser(int id) {
+        return entityManager.createQuery("from User where id = :userId", User.class)
+                .setParameter("userId", id)
+                .getSingleResult();
+    }
+
+    @Override
+    public void saveUser(User user) {
+        entityManager.persist(user);
+    }
+
+    @Override
+    public void updateUser(int id, User updatedUser) {
+        User userToBeUpdated = getUser(id);
+        userToBeUpdated.setUsername(updatedUser.getUsername());
+        userToBeUpdated.setPassword(updatedUser.getPassword());
+        entityManager.merge(userToBeUpdated);
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        entityManager.remove(getUser(id));
+    }
+
+
+
+    @Override
+    public User loadUserByUsername(String name) {
+        return entityManager.createQuery("from User where username = :username", User.class)
+                .setParameter("username", name)
+                .getSingleResult();
+    }
+}
