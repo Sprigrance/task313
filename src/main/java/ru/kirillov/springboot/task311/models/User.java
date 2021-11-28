@@ -24,7 +24,10 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;    // поле с именем "password" обязательно для реализации UserDetails!
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//    @JoinTable(name = "users_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
@@ -64,6 +67,16 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+//    public void setRolesFromArray(String[] roles) {
+//        Set<Role> setRoles = new HashSet<>();
+//        for (String strRole : roles) {
+//            Role role = new Role();
+//            role.setName(strRole);
+//            setRoles.add(role);
+//        }
+//        this.roles = setRoles;
+//    }
 
     /* реализация UserDetails */
     @Override
