@@ -18,11 +18,14 @@ public class User implements UserDetails {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;    // поле с именем "username" обязательно для реализации UserDetails!
 
     @Column(name = "password")
     private String password;    // поле с именем "password" обязательно для реализации UserDetails!
+
+    @Column(name = "email", unique = true)
+    private String email;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //    @JoinTable(name = "users_roles",
@@ -58,6 +61,14 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<Role> getRoles() {

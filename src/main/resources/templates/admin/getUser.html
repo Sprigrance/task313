@@ -7,14 +7,16 @@
 </head>
 <body>
 
-<p th:text="${user.getId()}"></p>
-<p th:text="${user.getUsername()}"></p>
+<p th:text="${user.id}"></p>
+<p th:text="${user.username}"></p>
+<p th:text="${user.email}"></p>
 
-<!--<h3>User's roles:</h3> &lt;!&ndash; заголовок 3го уровня &ndash;&gt;-->
-User's roles: <!-- заголовок 3го уровня -->
-<th:block th:each="role : ${user.getRoles()}">
-    <p th:text="${role.getName()}"></p>
-</th:block>
+<p>with roles: <br>
+<div th:each="role : ${user.getRoles()}">
+    <span th:text="${role.getName().substring(5)}"></span>
+    <br>
+</div>
+</p>
 
 <!-- GET-запрос на изменение User -->
 <a th:href="@{/admins/{id}/edit(id=${user.getId()})}">Edit</a>

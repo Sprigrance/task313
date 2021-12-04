@@ -1,33 +1,46 @@
 package ru.kirillov.springboot.task311.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kirillov.springboot.task311.models.Role;
 import ru.kirillov.springboot.task311.models.User;
 import ru.kirillov.springboot.task311.services.RoleService;
+import ru.kirillov.springboot.task311.services.UserDetailsServiceImpl;
 import ru.kirillov.springboot.task311.services.UserService;
+
+import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admins")
-public class AdminsController {
+public class AdminController {
 
-    private final UserService userService;
+    private final UserDetailsServiceImpl userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminsController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public AdminController(UserDetailsServiceImpl userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // index-страница после редиректа
     @GetMapping()
-    public String getAllUsers(Model model) {
+    public String getAllUsers(@AuthenticationPrincipal User currentUser,
+                              @ModelAttribute("newUser") User newUser,   // newUser - пустой объект для создания нового пользователя
+                              Model model) {
+
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("currentUser", userService.getUser(currentUser.getId()));
+//        model.addAttribute("currentUser", userService.loadUserByUsername(currentUser.getUsername()));
         return "admin/getAllUsers";
     }
 
@@ -39,10 +52,10 @@ public class AdminsController {
     }
 
     // GET-запрос создаст модель "newUser" и поместит его как объект для создания в new.html
-    @GetMapping("/new")
-    public String createUser(@ModelAttribute("newUser") User user) {
-        return "admin/new";
-    }
+//    @GetMapping("/new")
+//    public String createUser(@ModelAttribute("newUser") User user) {
+//        return "admin/new";
+//    }
 
     // POST-метод возьмет "newUser" со страницы new.html,
     //  передаст его с помощью @ModelAttribute("newUser") в User user,
@@ -71,7 +84,7 @@ public class AdminsController {
     //  id принимается из editUser.html с помощью @PathVariable.
     //   Далее произойдет изменение с помощью updateUser()
     @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("existingUser") User user,
+    public String updateUser(@ModelAttribute("user") User user,
                              @PathVariable("id") int id,
                              @RequestParam String[] strRoles) {
 
