@@ -45,11 +45,11 @@ public class AdminController {
     }
 
     // введенный в адресной строке id попадет с помощью @PathVariable в int id
-    @GetMapping("/{id}")
-    public String getUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        return "admin/getUser";
-    }
+//    @GetMapping("/{id}")
+//    public String getUser(@PathVariable("id") int id, Model model) {
+//        model.addAttribute("user", userService.getUser(id));
+//        return "admin/getUser";
+//    }
 
     // GET-запрос создаст модель "newUser" и поместит его как объект для создания в new.html
 //    @GetMapping("/new")

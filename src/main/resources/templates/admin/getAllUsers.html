@@ -33,23 +33,22 @@
                   th:text="${role.name.substring(5)} + ' '"></span>
         </div>
         <div class="col-md-auto">
-            <a class="nav-link text-white-50" href="/logout">Logout</a>
+            <a class="btn btn-link text-white-50" href="/logout">Logout</a>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-2 mt-3">
-            <div class="btn-group btn-group-vertical btn-block" role="group">
+    <div class="row mt-3">
+        <div class="col-md-2 px-0">
+            <div class="btn-group-vertical btn-block" role="group">
                 <a href="/admins" class="btn btn-primary btn-block text-left" type="button">Admin</a>
-                <a href="/users" class="card-link">User</a>
+                <a href="/users" class="btn btn-link btn-block text-left" type="button">User</a>
             </div>
         </div>
-        <div class="col-md-10 bg-light">
+        <div class="col-md-10 px-4 bg-light">
             <h2>
                 Admin Panel
             </h2>
             <div class="tabbable">
-
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active show" href="#usersTableTAB" data-toggle="tab">Users Table</a>
@@ -58,8 +57,8 @@
                         <a class="nav-link" href="#newUserTAB" data-toggle="tab">New User</a>
                     </li>
                 </ul>
-
                 <div class="tab-content">
+                    <!-- usersTableTAB -->
                     <div class="tab-pane active" id="usersTableTAB">
                         <div class="card bg-default">
                             <h5 class="card-header">
@@ -264,7 +263,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- newUserTAB -->
                     <div class="tab-pane" id="newUserTAB">
                         <div class="card bg-default">
                             <h5 class="card-header">
@@ -276,37 +275,30 @@
                                     <div class="col-md-4">
                                     </div>
                                     <div class="col-md-4 text-center">
-
                                         <form role="form" th:method="POST"
                                               th:action="@{/admins}"
                                               th:object="${newUser}">
-
-
                                             <div class="form-group">
                                                 <label for="username2" class="font-weight-bold">Username</label>
-                                                <input th:field="*{username}" type="text" placeholder="Your name"
+                                                <input th:field="*{username}" type="text" placeholder="Username"
                                                        class="form-control" id="username2"/>
                                             </div>
-
                                             <div class="form-group">
                                                 <label for="email2" class="font-weight-bold">E-mail</label>
-                                                <input th:field="*{email}" type="email" placeholder="Your e-mail"
+                                                <input th:field="*{email}" type="email" placeholder="E-mail"
                                                        class="form-control" id="email2"/>
                                             </div>
-
                                             <div class="form-group">
                                                 <label for="password2" class="font-weight-bold">Password</label>
-                                                <input th:field="*{password}" type="text" placeholder="Password"
+                                                <input th:field="*{password}" type="password" placeholder="Password"
                                                        class="form-control" id="password2"/>
                                             </div>
-
                                             <div class="form-group">
                                                 <label for="roles2" class="font-weight-bold">Roles</label>
                                                 <select multiple class="form-control" id="roles2" size="2"
                                                         name="strRoles">
                                                     <option th:value="ROLE_ADMIN">ADMIN</option>
                                                     <option selected th:value="ROLE_USER">USER</option>
-
                                                 </select>
                                             </div>
                                             <input type="submit" value="Add new user" class="btn btn-success"/>
@@ -324,91 +316,5 @@
         </div>
     </div>
 </div>
-
-<!--                    <div class="tab-pane" id="newUserTAB">-->
-
-<!--                        <div class="card bg-default">-->
-<!--                            <h5 class="card-header">-->
-<!--                                Add new user-->
-<!--                            </h5>-->
-<!--                            <div class="card-body">-->
-<!--                                <p class="card-text">-->
-<!--                                <div class="row">-->
-<!--                                    &lt;!&ndash;                                <div class="col-md-4">&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                                    <div class="col-md-4 text-center">-->
-<!--                                        <form role="form" th:method="POST"-->
-<!--                                              th:action="@{/admins}"-->
-<!--                                              th:object="${newUser}">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="usernameNew" class="font-weight-bold">Username</label>-->
-<!--                                                <input th:field="*{username}" type="text" placeholder="Your name"-->
-<!--                                                       class="form-control" id="usernameNew"/>-->
-<!--                                            </div>-->
-
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="newEmail" class="font-weight-bold">E-mail</label>-->
-<!--                                                <input th:field="*{email}" type="email" placeholder="Your e-mail"-->
-<!--                                                       class="form-control" id="newEmail"/>-->
-<!--                                            </div>-->
-
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="newPassword" class="font-weight-bold">Password</label>-->
-<!--                                                <input th:field="*{password}" type="text" placeholder="Password"-->
-<!--                                                       class="form-control" id="newPassword"/>-->
-<!--                                            </div>-->
-
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="newRoles" class="font-weight-bold">Roles</label>-->
-<!--                                                <select multiple class="form-control" id="newRoles" size="2"-->
-<!--                                                        name="strRoles">-->
-<!--                                                    <option th:value="ROLE_ADMIN">ADMIN</option>-->
-<!--                                                    <option selected th:value="ROLE_USER">USER</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                            <input type="submit" value="Add new user" class="btn btn-success"/>-->
-<!--                                        </form>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-
-<!--</div>-->
-<!--<div>-->
-<!--    <div class="container-fluid">-->
-<!--        <div class="row flex-grow-1">-->
-<!--            <div class="p-2">-->
-<!--                <button class="btn btn-primary" type="button">Button</button>-->
-<!--                <ui class="list-group">-->
-<!--                    <li class="list-group-item">-->
-
-<!-- сделать кнопки или типо того -->
-<!--                        <div th:each="user : ${users}">-->
-<!--                            <button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>-->
-<!--&lt;!&ndash;                            <a th:href="@{/admins/{id}(id=${user.getId()})}" th:text="${user.getUsername()}"></a>&ndash;&gt;-->
-<!--                        </div>-->
-
-
-<!--                    </li>-->
-<!--                </ui>-->
-
-
-<!--<div th:each="user : ${users}"-->
-<!-- при нажатии на "имя пользователя" выполнится переход на /admins/{id}, где вместо {id} будет user.getId() -->
-<!--                    <a th:href="@{/admins/{id}(id=${user.getId()})}" th:text="${user.getUsername()}"></a>-->
-<!--                </div>-->
-
-<!--                <hr/>-->
-
-<!--                <a href="/admins/new">Create new user</a>-->
-
-<!--                <hr/>-->
-
-<!--                <form th:action="@{/logout}" method="POST">-->
-<!--                    <input type="submit" value="Logout"/>-->
-<!--                </form>-->
-
-
 </body>
 </html>
