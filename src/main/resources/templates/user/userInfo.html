@@ -2,18 +2,94 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
+    <!-- Подключаем bootstrap 4 в <head> -->
+    <!-- Кодировка веб-страницы -->
     <meta charset="UTF-8">
+    <!-- Настройка viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User information</title>
+
+    <!-- Bootstrap CSS (Cloudflare CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css"
+          integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- jQuery (Cloudflare CDN) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
+            integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
+<div class="container-fluid">
+    <div class="row bg-dark text-white">
+        <div class="p-2 flex-grow-1">
+            <b><span th:text="${currentUser.email}"></span></b>
+            <span>with roles:</span>
+            <span th:each="role : ${currentUser.roles}"
+                  th:text="${role.name.substring(5)} + ' '"></span>
+        </div>
+        <div class="col-md-auto">
+            <a class="btn btn-link text-white-50" href="/logout">Logout</a>
+        </div>
+    </div>
 
-<p th:text="${currentUser.getUsername()}"></p>
-<br><br>
-<hr/> <!-- создаем горизонтальную линию -->
+    <div class="row mt-3">
+        <div class="col-md-2 px-0">
+            <div class="btn-group-vertical btn-block" role="group">
+                <a href="/users/admin" class="btn btn-link btn-block text-left" type="button">Admin</a>
+                <a href="/users/user" class="btn btn-primary btn-block text-left" type="button">User</a>
+            </div>
+        </div>
+        <div class="col-md-10 px-4 bg-light">
+            <h2>
+                User information-page
+            </h2>
+            <div class="card bg-default">
+                <h5 class="card-header">
+                    About user
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Roles</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <td th:text="${currentUser.id}"></td>
+                        <td th:text="${currentUser.username}"></td>
+                        <td th:text="${currentUser.email}"></td>
+                        <td>
+                            <span th:each="role : ${currentUser.roles}"
+                                  th:text="${role.name.substring(5)} + ' '"></span>
+                        </td>
+                        </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<form th:action="@{/logout}" method="POST">
-    <input type="submit" value="Logout"/>
-</form>
+                        <!--<p th:text="${currentUser.getUsername()}"></p>-->
+                        <!--<br><br>-->
+                        <!--<p>with roles: <br>-->
+                        <!--<div th:each="role : ${currentUser.roles}">-->
+                        <!--    <span th:text="${role.getName().substring(5)}"></span>-->
+                        <!--    <br>-->
+                        <!--</div>-->
+                        <!--<hr/> &lt;!&ndash; создаем горизонтальную линию &ndash;&gt;-->
+
+                        <!--<form th:action="@{/logout}" method="POST">-->
+                        <!--    <input type="submit" value="Logout"/>-->
+                        <!--</form>-->
 
 </body>
 </html>
