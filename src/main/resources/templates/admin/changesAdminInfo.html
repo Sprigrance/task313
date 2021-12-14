@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Подключаем bootstrap 4 в <head> -->
+    <!-- Кодировка веб-страницы -->
+    <meta charset="UTF-8">
+    <!-- Настройка viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All users</title>
+    <!-- Bootstrap CSS (Cloudflare CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css"
+          integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row bg-dark text-white">
+        <div class="p-2 flex-grow-1">
+            <b><span th:text="${currentUser.email}"></span></b>
+            <span>with roles:</span>
+            <span th:each="role : ${currentUser.roles}"
+                  th:text="${role.name.substring(5)} + ' '"></span>
+        </div>
+        <div class="col-md-auto">
+            <a class="btn btn-link text-white-50" href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-2 px-0">
+            <div class="btn-group-vertical btn-block" role="group">
+                <a href="/users/admin" class="btn btn-primary btn-block text-left" type="button">Admin</a>
+                <a href="/users/user" class="btn btn-link btn-block text-left" type="button">User</a>
+            </div>
+        </div>
+
+        <div class="col-md-10 px-4 bg-light">
+            <h2>
+                Admin Panel
+            </h2>
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active show" href="#usersTableTAB" data-toggle="tab" id="userstable">Users Table</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#newUserTAB" data-toggle="tab">New User</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <!-- usersTableTAB -->
+                    <div class="tab-pane active" id="usersTableTAB">
+
+                        <div class="card bg-default">
+                            <h5 class="card-header">All users</h5>
+                            <div class="card-body">
+                                <p class="card-text">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Roles</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <!-- const usersList = document.querySelector('.users-list'); -->
+                                    <tbody class="users-list" id="usersList">
+                                    <!-- Берем таблицу из main.js -->
+                                    </tbody>
+
+                                </table>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- newUserTAB + JS -->
+                    <div class="tab-pane" id="newUserTAB">
+                        <div class="card bg-default">
+                            <h5 class="card-header">Add new user</h5>
+                            <div class="card-body">
+                                <p class="card-text">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-4 text-center">
+
+                                        <!-- const addNewUser = document.querySelector('.add-new-user'); -->
+                                        <form class="add-new-user" id="addnewuser">
+
+
+
+                                            <div class="form-group">
+                                                <label for="username-new" class="font-weight-bold">Username</label>
+                                                <input type="text" placeholder="Username" class="form-control" id="username-new"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="email-new" class="font-weight-bold">E-mail</label>
+                                                <input type="email" placeholder="E-mail" class="form-control" id="email-new"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="password-new" class="font-weight-bold">Password</label>
+                                                <input type="password" placeholder="Password" class="form-control" id="password-new"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="roles-new" class="font-weight-bold">Roles</label>
+                                                <select multiple class="form-control" id="roles-new" name="strRoles" size="2">
+                                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                                    <option selected value="ROLE_USER">USER</option>
+                                                </select>
+                                            </div>
+
+                                            <input type="submit" value="Add new user" class="btn btn-success" onclick="addUser()"/>
+
+                                        </form>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                    </div>
+                                </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- modal for EDIT button -->
+<div class="modal fade" id="editUserModal" tabindex="-1"
+     role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditLabel">Edit user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="PUT" id="edituser">
+
+                <div class="modal-body text-center">
+                    <div class="form-group">
+                        <label for="id" class="font-weight-bold">ID</label>
+                        <input value="" type="text" class="form-control" id="id" disabled/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="font-weight-bold">Username</label>
+                        <input value="" type="text" class="form-control" id="username" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="font-weight-bold">E-mail</label>
+                        <input value=""  type="email" class="form-control" id="email"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="font-weight-bold">Password</label>
+                        <input value=""  type="password" class="form-control" id="password" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roles" class="font-weight-bold">Roles</label>
+
+                        <select multiple class="form-control" id="roles" size="2" name="strRoles" required>
+                            <option th:value="ROLE_ADMIN">ADMIN</option>
+                            <option th:value="ROLE_USER">USER</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input value="Edit" class="btn btn-primary" onclick="editUser()" id="edit-user"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- modal for DELETE button -->
+<div class="modal fade delete-user" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDeleteLabel">Delete user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body text-center">
+
+                <div class="form-group">
+                    <label for="id1" class="font-weight-bold">ID</label>
+                    <input value="deleteId" type="text" class="form-control" id="id1" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <label for="username1" class="font-weight-bold">Username</label>
+                    <input value="deleteUsername" type="text" class="form-control" id="username1" disabled/>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email1" class="font-weight-bold">E-mail</label>
+                    <input value="deleteEmail" type="email" class="form-control" id="email1" disabled/>
+                </div>
+
+
+                <!--                <div class="form-group">-->
+                <!--                    <label for="password1" class="font-weight-bold">-->
+                <!--                        Password-->
+                <!--                    </label>-->
+                <!--                    <input th:value="${user.password}" name="password"-->
+                <!--                           type="password" class="form-control"-->
+                <!--                           id="password1" disabled/>-->
+                <!--                </div>-->
+
+                <div class="form-group">
+                    <label for="roles1" class="font-weight-bold">Roles</label>
+                    <select multiple class="form-control" id="roles1" size="2" name="strRoles" disabled>
+                        <option value="ROLE_ADMIN">ADMIN</option>
+                        <option selected value="ROLE_USER">USER</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input  type="submit" value="Delete" class="btn btn-danger" onclick="deleteUser()" id="delete-user"/>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="static/js/main.js"></script>
+
+<!-- jQuery (Cloudflare CDN) -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Bootstrap Bundle JS (Cloudflare CDN) -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
+        integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="static/js/main.js"></script>
+</body>
+</html>

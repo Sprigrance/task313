@@ -38,24 +38,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // конфигурация для прохождения аутентификации
     }
 
+//    @Override
+//    protected void configure(HttpSecurity security) throws Exception
+//    {
+//        security.httpBasic().disable();
+//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .successHandler(loginUserHandler)
-                // указываем action с формы логина
-//                .loginProcessingUrl("/login")                // убираем, т.к. используем стандартную форму
-//                // Указываем параметры логина и пароля с формы логина
-//                .usernameParameter("j_username")             // убираем, т.к. используем стандартную форму
-//                .passwordParameter("j_password")             // убираем, т.к. используем стандартную форму
-                // даем доступ к форме логина всем
                 .permitAll();
 
         http.logout()
-                // разрешаем делать logout всем
                 .permitAll()
-                // указываем URL logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                // указываем URL при удачном logout
                 .logoutSuccessUrl("/login")
                 //выключаем кроссдоменную секьюрность (на этапе обучения неважна)
                 .and().csrf().disable();
@@ -67,6 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 // защищенные URL
                 .antMatchers("/users/user").access("hasAnyRole('ADMIN','USER')")                      // будет "доделка" в ROLE_ADMIN, ROLE_USER
-                .antMatchers("/users/**").access("hasRole('ADMIN')").anyRequest().authenticated(); // будет "доделка" в ROLE_ADMIN
+                .antMatchers("/users/**").access("hasRole('ADMIN')").anyRequest().authenticated();    // будет "доделка" в ROLE_ADMIN
     }
 }
