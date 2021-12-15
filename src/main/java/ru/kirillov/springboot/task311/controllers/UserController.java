@@ -61,7 +61,8 @@ public class UserController {
                              @RequestParam String[] strRoles) {
 
         user.setRoles(roleService.getSetRoleFromArray(strRoles));      // Преобразовываем роли
-        userDetailsService.updateUser(id, user);
+//        userDetailsService.updateUser(id, user);
+        userDetailsService.updateUser(user);
         return "redirect:/users/admin";
     }
 

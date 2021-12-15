@@ -29,7 +29,7 @@ public class UserRESTController {
         return userDetailsService.getAllUsers();
     }
 
-    @GetMapping("/admin/{id}")
+    @GetMapping("/{id}")
     public User getUser(@PathVariable int id) {
         User user = userDetailsService.getUser(id);
         if (user == null) {
@@ -39,19 +39,19 @@ public class UserRESTController {
         return user;
     }
 
-    @PostMapping("/admin/new")
+    @PostMapping("/new")
     public User addNewUser(@RequestBody User user) {
         userDetailsService.saveUser(user);
         return user;
     }
 
-    @PutMapping("/admin/update")
+    @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userDetailsService.saveUser(user);
+        userDetailsService.updateUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable int id) {
         userDetailsService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
