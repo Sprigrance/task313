@@ -39,13 +39,13 @@ public class UserRESTController {
         return user;
     }
 
-    @PostMapping("/new")
+    @PostMapping("/admin/new")
     public User addNewUser(@RequestBody User user) {
         userDetailsService.saveUser(user);
         return user;
     }
 
-    @PutMapping("/users/")
+    @PutMapping("/admin/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userDetailsService.saveUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
