@@ -8,7 +8,6 @@
     <!-- Настройка viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>All users</title>
-
     <!-- Bootstrap CSS (Cloudflare CDN) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css"
           integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
@@ -21,7 +20,7 @@
             <b><span th:text="${currentUser.email}"></span></b>
             <span>with roles:</span>
             <span th:each="role : ${currentUser.roles}"
-                  th:text="${role.name.substring(5)} + ' '"></span>
+                  th:text="${role.name}"></span>
         </div>
         <div class="col-md-auto">
             <a class="btn btn-link text-white-50" href="/logout">Logout</a>
@@ -42,7 +41,7 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active show" href="#usersTableTAB" data-toggle="tab">Users Table</a>
+                        <a class="nav-link active show" href="#usersTableTAB" data-toggle="tab" id="usersTable" >Users Table</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#newUserTAB" data-toggle="tab">New User</a>
@@ -69,33 +68,6 @@
                                     </tr>
                                     </thead>
                                     <tbody class="users-list" id="usersList">
-<!--                                    <tr th:each="user : ${users}">-->
-<!--                                        <td th:text="${user.id}"></td>-->
-<!--                                        <td th:text="${user.username}"></td>-->
-<!--                                        <td th:text="${user.email}"></td>-->
-<!--                                        <td>-->
-<!--                                            <span th:each="role : ${user.roles}"-->
-<!--                                                  th:text="${role.name.substring(5)} + ' '"></span>-->
-<!--                                        </td>-->
-
-
-<!--                                        <td>-->
-<!--                                            &lt;!&ndash; EDIT button &ndash;&gt;-->
-<!--                                            <button class="btn btn-info" type="button" data-toggle="modal"-->
-<!--                                                    th:data-target="${'#editModal'+user.getId()}">-->
-<!--                                                Edit-->
-<!--                                            </button>-->
-<!--                                        </td>-->
-
-
-<!--                                        <td>-->
-<!--                                            &lt;!&ndash; DELETE button &ndash;&gt;-->
-<!--                                            <button class="btn btn-danger" type="button" data-toggle="modal"-->
-<!--                                                    th:data-target="${'#deleteModal'+user.getId()}">Delete-->
-<!--                                            </button>-->
-<!--                                        </td>-->
-
-<!--                                    </tr>-->
                                     </tbody>
                                 </table>
                                 </p>
@@ -132,8 +104,8 @@
                                             <div class="form-group">
                                                 <label for="roles-new" class="font-weight-bold">Roles</label>
                                                 <select multiple class="form-control" id="roles-new" name="newRoles" size="2">
-                                                    <option value="ROLE_ADMIN" >ADMIN</option>
-                                                    <option value="ROLE_USER" >USER</option>
+                                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                                    <option value="ROLE_USER">USER</option>
                                                 </select>
                                             </div>
                                             <input type="submit" value="Add new user" class="btn btn-success" onclick="addUser()"/>
@@ -217,16 +189,15 @@
 
                     <div class="form-group">
                         <label for="roles" class="font-weight-bold">Roles</label>
-                        <select multiple class="form-control" id="roles" size="2" name="strRoles2" required>
+                        <select multiple class="form-control" id="roles" name="existingRoles" size="2" required>
                             <option value="ROLE_ADMIN">ADMIN</option>
                             <option value="ROLE_USER">USER</option>
                         </select>
                     </div>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input value="Edit" class="btn btn-primary" onclick="editUser()" id="edit-user"/>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="editUser()" id="edit-user">Edit</button>
                 </div>
             </form>
         </div>
@@ -263,10 +234,10 @@
                         <input value="deleteEmail" type="email" class="form-control" id="email1" disabled />
                     </div>
 
-<!--                    <div class="form-group">-->
-<!--                        <label for="password1" class="font-weight-bold">Password</label>-->
-<!--                        <input value="deletePassword" type="password" class="form-control" id="password1" disabled />-->
-<!--                    </div>-->
+                    <div class="form-group">
+                        <label for="password1" class="font-weight-bold">Password</label>
+                        <input value="deletePassword" type="password" class="form-control" id="password1" disabled />
+                    </div>
 
                     <div class="form-group">
                         <label for="roles1" class="font-weight-bold">Roles</label>
@@ -286,15 +257,17 @@
 </div>
 
 <!-- jQuery (Cloudflare CDN) -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- Bootstrap Bundle JS (Cloudflare CDN) -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
-        integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Подключаем плагин Popper (необходим для работы компонента Dropdown и др.) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="static/js/main.js"></script>
+<!-- Bootstrap Bundle JS (Cloudflare CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
+        integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="../js/main.js"></script>
+
 </body>
 </html>

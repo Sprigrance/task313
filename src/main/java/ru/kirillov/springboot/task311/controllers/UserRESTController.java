@@ -45,15 +45,21 @@ public class UserRESTController {
         return user;
     }
 
-    @PutMapping("/{id}")
+//    @PutMapping("/{id}")
+//    public ResponseEntity<User> updateUser(@RequestBody User user) {
+//        userDetailsService.updateUser(user);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
+
+    @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userDetailsService.updateUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable int id) {
+    public String deleteUser(@PathVariable int id) {
         userDetailsService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "User with ID = " + id + " was completely deleted";
     }
 }

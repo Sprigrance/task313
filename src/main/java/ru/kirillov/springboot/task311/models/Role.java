@@ -22,11 +22,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "name", unique = true)
     private String name;
 
-//    @ManyToMany(mappedBy = "roles")
-    @ManyToMany
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "roles_id"),
-            inverseJoinColumns = @JoinColumn(name = "users_id"))
+    @ManyToMany(mappedBy = "roles")
 //    @JsonIgnore
     @JsonBackReference       //To recap, if you don't need those properties in the serialization or deserialization process, you can use @JsonIgnore. Otherwise, using the @JsonManagedReference /@JsonBackReference pair is the way to go.
     private Set<User> users;
@@ -47,8 +43,7 @@ public class Role implements GrantedAuthority {
     }
 
     public String getName() {
-//        return name.substring(4);
-        return name;
+        return " " + name.substring(5);
     }
 
     public void setName(String name) {
