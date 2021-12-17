@@ -31,31 +31,32 @@ public class UserRESTController {
     }
 
     @GetMapping("/admin")
-    public List<User> getAllUsers() {
-        return userDetailsService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> allUsers = userDetailsService.getAllUsers();
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable int id) {
+    public ResponseEntity<User> getUser(@PathVariable int id) {
         User user = userDetailsService.getUser(id);
         if (user == null) {
             throw new RuntimeException("There is no user with ID = " +
                     id + " in DataBase");
         }
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/currentUser")
-    public User getCurrentUser(@AuthenticationPrincipal User currentUser) {
+    public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal User currentUser) {
         User user = (User) userDetailsService.loadUserByUsername(currentUser.getUsername());
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public User addNewUser(@RequestBody User user) {
+    public ResponseEntity<User> addNewUser(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));  // Шифруем пароль
         userDetailsService.saveUser(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping("/update")
