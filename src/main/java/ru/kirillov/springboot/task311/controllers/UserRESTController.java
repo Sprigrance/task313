@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kirillov.springboot.task311.services.RoleService;
 import ru.kirillov.springboot.task311.services.UserDetailsServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,16 @@ import java.util.List;
 public class UserRESTController {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
     @Autowired
-    public UserRESTController(UserDetailsServiceImpl userDetailsService, RoleService roleService) {
+    public UserRESTController(UserDetailsServiceImpl userDetailsService,
+                              PasswordEncoder passwordEncoder,
+                              RoleService roleService) {
+
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
     }
 
@@ -39,17 +45,18 @@ public class UserRESTController {
         return user;
     }
 
-    @PostMapping("/new")
-    public User addNewUser(@RequestBody User user) {
-        userDetailsService.saveUser(user);
+    @GetMapping("/currentUser")
+    public User getCurrentUser(@AuthenticationPrincipal User currentUser) {
+        User user = (User) userDetailsService.loadUserByUsername(currentUser.getUsername());
         return user;
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<User> updateUser(@RequestBody User user) {
-//        userDetailsService.updateUser(user);
-//        return new ResponseEntity<>(user, HttpStatus.OK);
-//    }
+    @PostMapping("/new")
+    public User addNewUser(@RequestBody User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));  // Шифруем пароль
+        userDetailsService.saveUser(user);
+        return user;
+    }
 
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {

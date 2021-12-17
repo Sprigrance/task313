@@ -21,7 +21,7 @@ function getUsers() {
     }
 
     fetch('http://localhost:8080/api/admin')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => getUsersTable(data));
 }
 

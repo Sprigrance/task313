@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <!-- Подключаем bootstrap 4 в <head> -->
     <!-- Кодировка веб-страницы -->
@@ -110,34 +109,6 @@
                                             </div>
                                             <input type="submit" value="Add new user" class="btn btn-success" onclick="addUser()"/>
                                         </form>
-<!--                                        <form role="form" th:method="POST"-->
-<!--                                              th:action="@{/users/addUser}"-->
-<!--                                              th:object="${newUser}">-->
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="username2" class="font-weight-bold">Username</label>-->
-<!--                                                <input th:field="*{username}" type="text" placeholder="Username"-->
-<!--                                                       class="form-control" id="username2"/>-->
-<!--                                            </div>-->
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="email2" class="font-weight-bold">E-mail</label>-->
-<!--                                                <input th:field="*{email}" type="email" placeholder="E-mail"-->
-<!--                                                       class="form-control" id="email2"/>-->
-<!--                                            </div>-->
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="password2" class="font-weight-bold">Password</label>-->
-<!--                                                <input th:field="*{password}" type="password" placeholder="Password"-->
-<!--                                                       class="form-control" id="password2"/>-->
-<!--                                            </div>-->
-<!--                                            <div class="form-group">-->
-<!--                                                <label for="roles2" class="font-weight-bold">Roles</label>-->
-<!--                                                <select multiple class="form-control" id="roles2" size="2"-->
-<!--                                                        name="strRoles">-->
-<!--                                                    <option th:value="ROLE_ADMIN">ADMIN</option>-->
-<!--                                                    <option selected th:value="ROLE_USER">USER</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                            <input type="submit" value="Add new user" class="btn btn-success"/>-->
-<!--                                        </form>-->
                                     </div>
                                     <div class="col-md-4">
                                     </div>
@@ -267,7 +238,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
         integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="../js/main.js"></script>
+<script src="../js/admin.js"></script>
 
 </body>
 </html>

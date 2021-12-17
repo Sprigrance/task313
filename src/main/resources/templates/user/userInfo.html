@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Подключаем bootstrap 4 в <head> -->
     <!-- Кодировка веб-страницы -->
@@ -8,20 +7,19 @@
     <!-- Настройка viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User information</title>
-
     <!-- Bootstrap CSS (Cloudflare CDN) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css"
           integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
           crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
-<body>
+<body onload="getUserInfo()">
 <div class="container-fluid">
     <div class="row bg-dark text-white">
         <div class="p-2 flex-grow-1">
             <b><span th:text="${currentUser.email}"></span></b>
             <span>with roles:</span>
             <span th:each="role : ${currentUser.roles}"
-                  th:text="${role.name.substring(5)} + ' '"></span>
+                  th:text="${role.name}"></span>
         </div>
         <div class="col-md-auto">
             <a class="btn btn-link text-white-50" href="/logout">Logout</a>
@@ -54,44 +52,28 @@
                             <th>Roles</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <td th:text="${currentUser.id}"></td>
-                        <td th:text="${currentUser.username}"></td>
-                        <td th:text="${currentUser.email}"></td>
-                        <td>
-                            <span th:each="role : ${currentUser.roles}"
-                                  th:text="${role.name.substring(5)} + ' '"></span>
-                        </td>
+                        <tbody class="user-info" id="userInfo">
                         </tbody>
-                </table>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-                        <!--<p th:text="${currentUser.getUsername()}"></p>-->
-                        <!--<br><br>-->
-                        <!--<p>with roles: <br>-->
-                        <!--<div th:each="role : ${currentUser.roles}">-->
-                        <!--    <span th:text="${role.getName().substring(5)}"></span>-->
-                        <!--    <br>-->
-                        <!--</div>-->
-                        <!--<hr/> &lt;!&ndash; создаем горизонтальную линию &ndash;&gt;-->
-
-                        <!--<form th:action="@{/logout}" method="POST">-->
-                        <!--    <input type="submit" value="Logout"/>-->
-                        <!--</form>-->
-
-</body>
 <!-- jQuery (Cloudflare CDN) -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Подключаем плагин Popper (необходим для работы компонента Dropdown и др.) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
 <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
         integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="../js/user.js"></script>
 
-<script src="static/js/info.js"></script>
+</body>
 </html>
