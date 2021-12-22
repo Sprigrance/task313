@@ -2,8 +2,6 @@ package ru.kirillov.springboot.task311.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,38 +15,26 @@ public class UserController {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserDetailsServiceImpl userDetailsService,
-                          RoleService roleService,
-                          PasswordEncoder passwordEncoder) {
+    public UserController(UserDetailsServiceImpl userDetailsService, RoleService roleService) {
         this.userDetailsService = userDetailsService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin")
-    public String getAllUsers(@AuthenticationPrincipal User currentUser,
-                              @ModelAttribute("newUser") User newUser,   // newUser - пустой объект для создания нового пользователя
-                              Model model) {
-
+    public String getAllUsers(@AuthenticationPrincipal User currentUser, Model model) {
+        model.addAttribute("allRoles", roleService.getAllRoles());
         model.addAttribute("users", userDetailsService.getAllUsers());
-        model.addAttribute("currentUser",
-                userDetailsService.loadUserByUsername(currentUser.getUsername()));
+        model.addAttribute("currentUser", userDetailsService.getUser(currentUser.getId()));
         return "admin/adminInfo";
     }
 
     @GetMapping("/user")
-    public String showUserInfo(@AuthenticationPrincipal User currentUser,
-                               Model model) {
-
-        model.addAttribute("currentUser",
-                userDetailsService.loadUserByUsername(currentUser.getUsername()));
+    public String showUserInfo(@AuthenticationPrincipal User currentUser, Model model) {
+        model.addAttribute("currentUser", userDetailsService.getUser(currentUser.getId()));
         return "user/userInfo";
     }
-
-
 
 //    @PostMapping("/addUser")
 //    public String addUser(@ModelAttribute("newUser") User user,
@@ -92,6 +78,6 @@ public class UserController {
 //        user.setPassword(passwordEncoder.encode("admin"));
 //        user.setRoles(roles);
 //
-//        userService.saveUser(user);
+//        userDetailsService.saveUser(user);
 //    }
 }

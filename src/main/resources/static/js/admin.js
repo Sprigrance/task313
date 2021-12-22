@@ -1,5 +1,6 @@
 const usersList = document.querySelector('.users-list');
 const addNewUser = document.querySelector('.add-new-user');
+const url='http://localhost:8080/api';
 
 function getUsers() {
     let output = ''
@@ -20,7 +21,7 @@ function getUsers() {
         usersList.innerHTML = output;
     }
 
-    fetch('http://localhost:8080/api/admin')
+    fetch(url + '/admin')
         .then(res => res.json())
         .then(data => getUsersTable(data));
 }
@@ -37,7 +38,7 @@ function addUser() {
         roles: getRolesForNewUser()
     }
 
-    fetch('http://localhost:8080/api/new', {
+    fetch(url + '/new', {
         method: 'POST',
         headers: {"Content-Type": "application/json; charset=UTF-8"},
         body: JSON.stringify(newUser)
@@ -50,7 +51,7 @@ function addUser() {
 
 // получение юзера в модальном окне edit
 function editModal(id) {
-    fetch('http://localhost:8080/api/' + id)
+    fetch(url + '/' + id)
         .then(res => res.json())
         .then(user => {
             $('#id').val(user.id)
@@ -75,7 +76,7 @@ function editUser() {
         roles: getRolesForUpdate()
     }
 
-    fetch(`http://localhost:8080/api/update/`, {
+    fetch(url + `/update`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json;charset=UTF-8'},
         body: JSON.stringify(userForUpdate)
@@ -97,7 +98,7 @@ function editUser() {
 
 // получение юзера в модальном окне delete
 function deleteModal(id) {
-    fetch('http://localhost:8080/api/' + id)
+    fetch(url + '/' + id)
         .then(res => res.json())
         .then(user => {
             $('#id1').val(user.id)
@@ -110,7 +111,7 @@ function deleteModal(id) {
 
 function deleteUser() {
     let id = document.getElementById('id1').value;
-    fetch(`http://localhost:8080/api/` + id, {
+    fetch(url + `/` + id, {
         method: 'DELETE'
     })
         .then(() => {
@@ -125,12 +126,15 @@ function getRolesForUpdate() {
     let allRoles = [];
     $.each($("select[name='existingRoles'] option:selected"), function () {
         let role = {};
-        role.name = $(this).attr('value');
-        if (role.name === 'ROLE_ADMIN') {
-            role.id = 1;
-        } else {
-            role.id = 2;
-        }
+        role.id = $(this).attr('id');
+        role.name = 'ROLE_' + $(this).attr('name');
+        // let role = {};
+        // role.name = $(this).attr('value');
+        // if (role.name === 'ROLE_ADMIN') {
+        //     role.id = 1;
+        // } else {
+        //     role.id = 2;
+        // }
         allRoles.push(role);
         console.log("role: " + JSON.stringify(role));
     });
@@ -141,12 +145,15 @@ function getRolesForNewUser() {
     let allRolesNew = [];
     $.each($("select[name='newRoles'] option:selected"), function () {
         let role1 = {};
-        role1.name = $(this).attr('value');
-        if (role1.name === 'ROLE_ADMIN') {
-            role1.id = 1;
-        } else {
-            role1.id = 2;
-        }
+        role1.id = $(this).attr('id');
+        role1.name = 'ROLE_' + $(this).attr('name');
+        // let role1 = {};
+        // role1.name = $(this).attr('value');
+        // if (role1.name === 'ROLE_ADMIN') {
+        //     role1.id = 1;
+        // } else {
+        //     role1.id = 2;
+        // }
         allRolesNew.push(role1);
         console.log("role: " + JSON.stringify(role1));
     });

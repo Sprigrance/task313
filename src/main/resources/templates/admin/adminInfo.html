@@ -19,7 +19,7 @@
             <b><span th:text="${currentUser.email}"></span></b>
             <span>with roles:</span>
             <span th:each="role : ${currentUser.roles}"
-                  th:text="${role.name}"></span>
+                  th:text="' ' + ${role.name}"></span>
         </div>
         <div class="col-md-auto">
             <a class="btn btn-link text-white-50" href="/logout">Logout</a>
@@ -102,9 +102,11 @@
 
                                             <div class="form-group">
                                                 <label for="roles-new" class="font-weight-bold">Roles</label>
-                                                <select multiple class="form-control" id="roles-new" name="newRoles" size="2">
-                                                    <option value="ROLE_ADMIN">ADMIN</option>
-                                                    <option value="ROLE_USER">USER</option>
+                                                <select multiple class="form-control" id="roles-new" name="newRoles" required>
+<!--                                                    <option value="ROLE_ADMIN">ADMIN</option>-->
+<!--                                                    <option value="ROLE_USER">USER</option>-->
+                                                    <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"
+                                                            th:id="${role.id}" th:name="${role.name}"></option>
                                                 </select>
                                             </div>
                                             <input type="submit" value="Add new user" class="btn btn-success" onclick="addUser()"/>
@@ -135,7 +137,7 @@
                 </button>
             </div>
 
-            <form method="PUT" id="editUser">
+            <form id="editUser">
 
                 <div class="modal-body text-center">
                     <div class="form-group">
@@ -158,11 +160,13 @@
                         <input value="" type="password" class="form-control" id="password" required/>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label for="roles" class="font-weight-bold">Roles</label>
-                        <select multiple class="form-control" id="roles" name="existingRoles" size="2" required>
-                            <option value="ROLE_ADMIN">ADMIN</option>
-                            <option value="ROLE_USER">USER</option>
+                        <select multiple class="form-control" id="roles" name="existingRoles" required>
+<!--                            <option value="ROLE_ADMIN">ADMIN</option>-->
+<!--                            <option value="ROLE_USER">USER</option>-->
+                            <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"
+                                    th:id="${role.id}" th:name="${role.name}"></option>
                         </select>
                     </div>
                 </div>
@@ -176,7 +180,7 @@
 </div>
 
 
-<!-- modal for DELETE button -->
+                                <!-- modal for DELETE button -->
 <div class="modal fade delete-user" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -212,9 +216,13 @@
 
                     <div class="form-group">
                         <label for="roles1" class="font-weight-bold">Roles</label>
-                        <select multiple class="form-control" id="roles1" size="2" name="strRoles" disabled>
-                            <option value="ROLE_ADMIN">ADMIN</option>
-                            <option selected value="ROLE_USER">USER</option>
+<!--                        <select multiple class="form-control" id="roles1" name="strRoles" disabled>-->
+<!--                            <option value="ROLE_ADMIN">ADMIN</option>-->
+<!--                            <option selected value="ROLE_USER">USER</option>-->
+<!--                        </select>-->
+                        <select multiple class="form-control" id="roles1" name="existingRoles" disabled>
+                            <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"
+                                    th:id="${role.id}" th:name="${role.name}"></option>
                         </select>
                     </div>
                 </div>
